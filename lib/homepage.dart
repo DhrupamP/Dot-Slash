@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'main.dart';
 
 String apikey = "c7f3ca513a67d8c827f86198c25c05c1";
 WeatherFactory wf = new WeatherFactory(apikey);
-List<String> croplist = ["wheat", "rice", "mango"];
+List<String> croplist = [];
 
 void getData() async {
   List<Weather> forcast = await wf.fiveDayForecastByLocation(21.9203, 73.4232);
@@ -23,6 +25,18 @@ class _HomePageState extends State<HomePage> {
   FlutterLocalNotificationsPlugin fltrNotif = FlutterLocalNotificationsPlugin();
   Future notificationSelected(String? payload) async {}
 
+  Future<void> addData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setStringList("name", croplist);
+  }
+
+  void putData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      croplist = pref.getStringList("name") as List<String>;
+    });
+  }
+
   Future showNotification() async {
     AndroidNotificationDetails androidDetails =
         const AndroidNotificationDetails(
@@ -37,6 +51,9 @@ class _HomePageState extends State<HomePage> {
 
   void initState() {
     super.initState();
+
+    putData();
+
     AndroidInitializationSettings androidinitialize =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
     InitializationSettings initializationSettings =
@@ -73,6 +90,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             croplist.add(myController.text);
                             Navigator.pop(context);
+                            addData();
                           },
                           child: Text("ADD"))
                     ],
@@ -90,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   width: sw * 1,
                   height: sh * 0.3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Color(0xff021837),
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(20),
