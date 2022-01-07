@@ -67,10 +67,10 @@ class _HomePageState extends State<HomePage> {
           child: Stack(
             children: [
               Align(
-                alignment: Alignment(0, -0.9),
+                alignment: Alignment(0, -1),
                 child: Container(
                   width: sw * 1,
-                  height: sh * 0.5,
+                  height: sh * 0.3,
                   decoration: BoxDecoration(
                       color: Color(0xff021837),
                       borderRadius: BorderRadius.only(
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   height: sh * 0.1,
                   width: sw * 0.75,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xffededed),
                     borderRadius: BorderRadius.all(
                       Radius.circular(20),
