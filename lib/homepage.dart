@@ -5,10 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 String apikey = "c7f3ca513a67d8c827f86198c25c05c1";
 WeatherFactory wf = new WeatherFactory(apikey);
-// String messageTitle = "Empty";
-// String notificationAlert = "alert";
+List<String> croplist = ["wheat", "rice", "mango"];
 
-// FirebaseMessaging firebaseMessaging =FirebaseMessaging();
 void getData() async {
   List<Weather> forcast = await wf.fiveDayForecastByLocation(21.9203, 73.4232);
   print(forcast[39]);
@@ -23,7 +21,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FlutterLocalNotificationsPlugin fltrNotif = FlutterLocalNotificationsPlugin();
-  @override
   Future notificationSelected(String? payload) async {}
 
   Future showNotification() async {
@@ -41,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     AndroidInitializationSettings androidinitialize =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
     InitializationSettings initializationSettings =
         InitializationSettings(android: androidinitialize);
     fltrNotif.initialize(initializationSettings,
@@ -62,6 +59,28 @@ class _HomePageState extends State<HomePage> {
 
     TextEditingController myController = TextEditingController();
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("ADD CROP"),
+                content: Container(
+                  child: Column(
+                    children: [
+                      TextField(controller: myController),
+                      ElevatedButton(
+                          onPressed: () {
+                            croplist.add(myController.text);
+                            Navigator.pop(context);
+                          },
+                          child: Text("ADD"))
+                    ],
+                  ),
+                ),
+              );
+            });
+      }),
       body: Container(
           height: sh,
           child: Stack(
@@ -103,86 +122,18 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Align(
-                alignment: Alignment(0, -0.45),
+                alignment: Alignment(0, 0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  height: sh * 0.1,
-                  width: sw * 0.75,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffededed),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.delete,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment(0, -0.2),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  height: sh * 0.1,
-                  width: sw * 0.75,
-                  decoration: BoxDecoration(
-                    color: Color(0xffededed),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.delete,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment(0, 0.05),
-                child: Container(
-                  // margin: EdgeInsets.symmetric(horizontal: 20),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  height: sh * 0.1,
-                  width: sw * 0.75,
-                  decoration: BoxDecoration(
-                    color: Color(0xffededed),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.delete,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment(0, 0.30),
-                child: Container(
-                  height: sh * 0.1,
-                  width: sw * 0.75,
-                  decoration: BoxDecoration(
-                    color: Color(0xffededed),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
+                  height: 300,
+                  child: ListView.builder(
+                      itemCount: croplist.length,
+                      itemBuilder: (BuildContext context, int idx) {
+                        return Container(
+                          child: CropTile(
+                            name: croplist[idx],
+                          ),
+                        );
+                      }),
                 ),
               ),
               Align(
@@ -209,6 +160,35 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           )),
+    );
+  }
+}
+
+class CropTile extends StatelessWidget {
+  const CropTile({Key? key, required this.name}) : super(key: key);
+  final String name;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      height: 80,
+      width: 300,
+      decoration: const BoxDecoration(
+        color: Color(0xffededed),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(name),
+          Icon(
+            Icons.delete,
+            size: 30,
+          ),
+        ],
+      ),
     );
   }
 }
