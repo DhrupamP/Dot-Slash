@@ -3,6 +3,7 @@ import 'package:newsapi/newsapi.dart';
 
 String newsapikey = '15b94a69059948bab9895e07f56b606b';
 List<Article> ans = [];
+
 NewsApi newsapi = NewsApi(apiKey: newsapikey);
 
 class NewsPage extends StatefulWidget {
@@ -45,6 +46,26 @@ class _NewsPageState extends State<NewsPage> {
                 child: Text(ans[idx].title.toString()),
               );
             }),
+      ),
+    );
+  }
+}
+
+class NewsTile extends StatefulWidget {
+  const NewsTile({Key? key, required this.text}) : super(key: key);
+  final String text;
+  @override
+  _NewsTileState createState() => _NewsTileState();
+}
+
+class _NewsTileState extends State<NewsTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      width: 400,
+      child: Row(
+        children: [Text(widget.text)],
       ),
     );
   }
