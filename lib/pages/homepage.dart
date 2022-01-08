@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:try_notif/pages/disease.dart';
 import 'package:try_notif/pages/singleHome.dart';
 import 'package:weather/weather.dart';
@@ -17,6 +18,13 @@ int temp3 = 0;
 int temp4 = 0;
 int temp5 = 0;
 int temp6 = 0;
+
+int temp11 = 0;
+int temp12 = 0;
+int temp13 = 0;
+int temp14 = 0;
+int temp15 = 0;
+int temp16 = 0;
 
 List<String> crops = [
   "Wheat",
@@ -58,19 +66,42 @@ List<int> maxTemp = [
   13,
   30
 ];
+List<int> minTemp = [
+  4,
+  20,
+  21,
+  15,
+  0,
+  22,
+  -2,
+  18,
+  24,
+  18,
+  8,
+  12,
+  15,
+  21,
+  15,
+  15,
+  7,
+  22
+];
 void getData() async {
   List<Weather> forcast = await wf.fiveDayForecastByLocation(21.9203, 73.4232);
-  temp1 = forcast[0].temperature as int;
-  temp2 = forcast[5].temperature as int;
-  temp3 = forcast[15].temperature as int;
-  temp4 = forcast[25].temperature as int;
-  temp5 = forcast[30].temperature as int;
-  temp6 = forcast[39].temperature as int;
-  print(temp2);
+  temp1 = forcast[0].temperature!.celsius!.toInt();
+  temp2 = forcast[5].temperature!.celsius!.toInt();
+  temp3 = forcast[15].temperature!.celsius!.toInt();
+  temp4 = forcast[25].temperature!.celsius!.toInt();
+  temp5 = forcast[30].temperature!.celsius!.toInt();
+  temp6 = forcast[39].temperature!.celsius!.toInt();
+  var x = forcast[0].cloudiness;
+  print(x);
 }
 
 Color temperatureCompare(String crop) {
   int idx = crops.indexOf(crop);
+  // print(idx);
+  // print(maxTemp[idx]);
   if (temp1 > maxTemp[idx] ||
       temp2 > maxTemp[idx] ||
       temp3 > maxTemp[idx] ||
@@ -78,9 +109,30 @@ Color temperatureCompare(String crop) {
       temp5 > maxTemp[idx] ||
       temp6 > maxTemp[idx]) {
     return Colors.red;
+  } else if (temp11 > minTemp[idx] ||
+      temp12 > minTemp[idx] ||
+      temp13 > minTemp[idx] ||
+      temp14 > minTemp[idx] ||
+      temp15 > minTemp[idx] ||
+      temp16 > minTemp[idx]) {
+    return Colors.blue.shade300;
   }
-  return Colors.white;
+  return Color(0xffededed);
 }
+
+// String tempControl(String crop) {
+//   int idx = crops.indexOf(crop);
+// }
+// String currweather = "";
+//
+// void getCurrentData() async {
+//   Weather w = await wf.currentWeatherByLocation(21.9203, 73.4232);
+//
+//   currweather = w.weatherIcon!;
+//   if(currweather =="11d"){
+//     return FontAwesomeIcons.
+//   }
+// }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -130,6 +182,7 @@ class _HomePageState extends State<HomePage> {
     getData();
   }
 
+  String dropdownValue = "Wheat";
   @override
   Widget build(BuildContext context) {
     var sh = MediaQuery.of(context).size.height;
@@ -137,6 +190,7 @@ class _HomePageState extends State<HomePage> {
 
     TextEditingController myController = TextEditingController();
     List<Widget> pages = [HomePage(), DiseasePage()];
+    String selectedcrop = "";
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -146,13 +200,32 @@ class _HomePageState extends State<HomePage> {
                   return AlertDialog(
                     title: Text("ADD CROP"),
                     content: Container(
+                      height: sh * 0.15,
                       child: Column(
                         children: [
-                          TextField(controller: myController),
+                          DropdownButtonFormField(
+                            hint: Text("Select Crop"),
+                            items: crops
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownValue = newValue!;
+                                selectedcrop = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  croplist.add(myController.text);
+                                  croplist.add(selectedcrop);
                                   Navigator.pop(context);
                                   addData();
                                 });
