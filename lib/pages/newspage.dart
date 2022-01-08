@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsapi/newsapi.dart';
+import 'package:try_notif/pages/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 String newsapikey = '15b94a69059948bab9895e07f56b606b';
@@ -27,6 +28,7 @@ class _NewsPageState extends State<NewsPage> {
     setState(
       () {
         ans = mynews.articles as List<Article>;
+        loading=false;
       },
     );
   }
@@ -37,10 +39,10 @@ class _NewsPageState extends State<NewsPage> {
     super.initState();
     getNews();
   }
-
+  bool loading=true;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading==true ? Loading():Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Latest NEWS")),
         backgroundColor: Color(0xff021837),
