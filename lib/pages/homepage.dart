@@ -160,6 +160,7 @@ void getCurrentData() async {
   print(w.temperature!.celsius);
   if (currweather == "11d") {
     curricon = WeatherIcons.day_thunderstorm;
+// <<<<<<< HEAD
     currstatus = "Thunder Storm";
   } else if (currweather == "09d") {
     curricon = WeatherIcons.day_showers;
@@ -249,6 +250,38 @@ Image imageselector(String crop) {
   } else {
     return Image.asset("assets/images/corn.jfif");
   }
+  // else if (currweather == "09d") {
+  //   curricon = WeatherIcons.day_showers;
+  // } else if (currweather == "10d") {
+  //   curricon = WeatherIcons.day_rain;
+  // } else if (currweather == "13d") {
+  //   curricon = WeatherIcons.day_snow;
+  // } else if (currweather == "50d") {
+  //   curricon = WeatherIcons.day_haze;
+  // } else if (currweather == "01d") {
+  //   curricon = WeatherIcons.day_sunny;
+  // } else if (currweather == "02d" || currweather == "03d") {
+  //   curricon = WeatherIcons.day_cloudy;
+  // } else if (currweather == "04d") {
+  //   curricon = WeatherIcons.day_cloudy_high;
+  // } else if (currweather == "11n") {
+  //   curricon = WeatherIcons.night_thunderstorm;
+  // } else if (currweather == "09n") {
+  //   curricon = WeatherIcons.night_showers;
+  // } else if (currweather == "10n") {
+  //   curricon = WeatherIcons.night_rain;
+  // } else if (currweather == "13n") {
+  //   curricon = WeatherIcons.night_snow;
+  // } else if (currweather == "50n") {
+  //   curricon = WeatherIcons.night_fog;
+  // } else if (currweather == "01n") {
+  //   curricon = WeatherIcons.night_clear;
+  // } else if (currweather == "02n" || currweather == "03n") {
+  //   curricon = WeatherIcons.night_cloudy;
+  // } else if (currweather == "04n") {
+  //   curricon = WeatherIcons.night_cloudy_high;
+  // (current weather)
+  //  }
 }
 
 class HomePage extends StatefulWidget {
@@ -412,13 +445,17 @@ class _HomePageState extends State<HomePage> {
                   // ),
                   child: Stack(
                     children: [
-                      Align(
+                      const Align(
                         alignment: Alignment(0, -0.6),
+                        // const Center(
+// >>>>>>> 936032c (current weather)
                         child: Text(
-                          "APP NAME",
+                          "AgroMate",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
+                        // ),
                       ),
+// <<<<<<< HEAD
                       Align(
                         alignment: Alignment(-0.3, 0),
                         child: Icon(
@@ -441,6 +478,29 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(fontSize: 30, color: Colors.white),
                         ),
                       ),
+// =======
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Text(
+                            "Hi, User",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                          Icon(
+                            curricon,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            currtemp,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.white),
+                          )
+                        ],
+                      )
+// >>>>>>> 936032c (current weather)
                     ],
                   ),
                 ),
