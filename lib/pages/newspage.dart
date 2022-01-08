@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:newsapi/newsapi.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String newsapikey = '15b94a69059948bab9895e07f56b606b';
 List<Article> ans = [];
 
 NewsApi newsapi = NewsApi(apiKey: newsapikey);
+
+void launchURL(String url) async {
+  if (!await launch(url)) throw 'Could not launch';
+}
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -24,7 +29,6 @@ class _NewsPageState extends State<NewsPage> {
         ans = mynews.articles as List<Article>;
       },
     );
-    print(ans);
   }
 
   @override
@@ -37,14 +41,15 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(child: Text("Latest NEWS")),
+        backgroundColor: Color(0xff021837),
+      ),
       body: Container(
         child: ListView.builder(
             itemCount: ans.length,
             itemBuilder: (BuildContext context, int idx) {
-              return Container(
-                padding: EdgeInsets.all(20),
-                child: Text(ans[idx].title.toString()),
-              );
+              return NewsTile(text: ans[idx].title.toString(), index: idx);
             }),
       ),
     );
@@ -52,8 +57,10 @@ class _NewsPageState extends State<NewsPage> {
 }
 
 class NewsTile extends StatefulWidget {
-  const NewsTile({Key? key, required this.text}) : super(key: key);
+  const NewsTile({Key? key, required this.text, required this.index})
+      : super(key: key);
   final String text;
+  final int index;
   @override
   _NewsTileState createState() => _NewsTileState();
 }
@@ -61,11 +68,33 @@ class NewsTile extends StatefulWidget {
 class _NewsTileState extends State<NewsTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 400,
-      child: Row(
-        children: [Text(widget.text)],
+    var sh = MediaQuery.of(context).size.height;
+    var sw = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () {
+        launchURL(ans[widget.index].url);
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 20,
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        // height: sh * 0.5,
+        // width: sw * 0.7,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(ans[widget.index].urlToImage)),
+              Text(
+                widget.text,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text((ans[widget.index].content)),
+            ],
+          ),
+        ),
       ),
     );
   }
