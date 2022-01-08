@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:try_notif/pages/disease.dart';
+import 'package:try_notif/pages/singleHome.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'main.dart';
+import 'disease.dart';
+import '../main.dart';
 
 String apikey = "c7f3ca513a67d8c827f86198c25c05c1";
 WeatherFactory wf = new WeatherFactory(apikey);
@@ -62,43 +64,41 @@ class _HomePageState extends State<HomePage> {
         onSelectNotification: notificationSelected);
   }
 
-  int _selectedIndex = 2;
-  void onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var sh = MediaQuery.of(context).size.height;
     var sw = MediaQuery.of(context).size.width;
 
     TextEditingController myController = TextEditingController();
+    List<Widget> pages = [HomePage(), DiseasePage()];
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("ADD CROP"),
-                content: Container(
-                  child: Column(
-                    children: [
-                      TextField(controller: myController),
-                      ElevatedButton(
-                          onPressed: () {
-                            croplist.add(myController.text);
-                            Navigator.pop(context);
-                            addData();
-                          },
-                          child: Text("ADD"))
-                    ],
-                  ),
-                ),
-              );
-            });
-      }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("ADD CROP"),
+                    content: Container(
+                      child: Column(
+                        children: [
+                          TextField(controller: myController),
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  croplist.add(myController.text);
+                                  Navigator.pop(context);
+                                  addData();
+                                });
+                              },
+                              child: Text("ADD"))
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          },
+          child: Icon(Icons.add)),
       body: Container(
           height: sh,
           child: Stack(
@@ -154,41 +154,37 @@ class _HomePageState extends State<HomePage> {
                       }),
                 ),
               ),
-              Align(
-                alignment: Alignment(0, 1),
-                child: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  iconSize: 30,
-                  showUnselectedLabels: false,
-                  showSelectedLabels: false,
-                  backgroundColor: Colors.white,
-                  selectedItemColor: Color(0xff021837),
-                  unselectedItemColor: Color(0xff021837),
-                  currentIndex: _selectedIndex,
-                  items: const [
-                    BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.camera_alt), label: ""),
-                    BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.newspaper), label: ""),
-                    BottomNavigationBarItem(icon: Icon(Icons.folder), label: "")
-                  ],
-                  onTap: onItemTapped,
-                ),
-              )
             ],
           )),
     );
   }
 }
 
-class CropTile extends StatelessWidget {
+class CropTile extends StatefulWidget {
   const CropTile({Key? key, required this.name}) : super(key: key);
   final String name;
+
+  @override
+  State<CropTile> createState() => _CropTileState();
+}
+
+class _CropTileState extends State<CropTile> {
+  void putData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      croplist = pref.getStringList("name") as List<String>;
+    });
+  }
+
+  Future<void> addData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setStringList("name", croplist);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       height: 80,
       width: 300,
       decoration: const BoxDecoration(
@@ -200,10 +196,25 @@ class CropTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text(name),
-          Icon(
-            Icons.delete,
-            size: 30,
+          Text(widget.name),
+          IconButton(
+            icon: Icon(Icons.delete, size: 30),
+            onPressed: () {
+              print(croplist);
+              setState(() {
+                croplist.remove(widget.name);
+                addData();
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) =>
+                        SingleHome(),
+                    transitionDuration: Duration.zero,
+                  ),
+                );
+              });
+              print(croplist);
+            },
           ),
         ],
       ),
