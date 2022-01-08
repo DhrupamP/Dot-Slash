@@ -1,37 +1,39 @@
-Crop: Apple Disease: Apple scab
-Crop: Apple Disease:Black rot
-Crop: Apple Disease: Cedar apple rust
-Crop: Apple
+Crop:Apple  Disease:Apple scab
+Crop:Apple  Disease:Black rot
+Crop:Apple  Disease:Cedar apple rust
+Crop:Apple
 Retake Picture!!
-Crop: Blueberry
-Crop: Cherry Disease: Powdery mildew
-Crop: Cherry
-Crop: Corn Disease: Cercospora leaf spot
-Crop: Corn Disease: Northern Leaf Blight
-Crop: Corn
-Crop: Grape Disease: Black_Measles
-Crop: Grape Disease: Leaf blight
-Crop: Grape
-Crop: Orange Disease: Citrus_greening
-Crop: Peach Disease: Bacterial spot
-Crop: Peach
-Pepper,Disease: Bacterial spot
-Crop: Pepper
-Crop: Potato Disease: Early blight
-Crop: Potato
-Crop: Potato Disease: Late blight
-Crop: Raspberry
-Crop: Soybean
-Crop: Squash Disease: Powdery mildew
-Crop: Strawberry Disease: Leaf scorch
-Crop: Strawberry
-Crop: Tomato Disease: Bacterial spot
-Crop: Tomato Disease: Early blight
-Crop: Tomato Disease: Late blight
-Crop: Tomato Disease: Leaf Mold
-Crop: Tomato Disease: Septoria leaf spot
-Crop: Tomato Disease: Spider mites
-Crop: Tomato Disease: Target Spot
-Crop: Tomato Disease: Yellow Leaf Curl Virus
-Crop: Tomato Disease: Mosaic Virus
-Crop: Tomato
+Crop:Blueberry
+Crop:Cherry  Disease:Powdery mildew
+Crop:Cherry
+Crop:Corn  Disease:Cercospora leaf spot
+Crop:Corn  Disease:Common Rust
+Crop:Corn  Disease:Northern Leaf Blight
+Crop:Corn
+Crop:Grape  Disease:Black Rot
+Crop:Grape  Disease:Black Measles
+Crop:Grape  Disease:Leaf blight
+Crop:Grape
+Crop:Orange  Disease:Citrus Greening
+Crop:Peach  Disease:Bacterial spot
+Crop:Peach
+Crop:Pepper  Disease:Bacterial spot
+Crop:Pepper
+Crop:Potato  Disease:Early blight
+Crop:Potato  Disease:Late blight
+Crop:Potato
+Crop:Raspberry
+Crop:Soybean
+Crop:Squash  Disease:Powdery mildew
+Crop:Strawberry  Disease:Leaf scorch
+Crop:Strawberry
+Crop:Tomato  Disease:Bacterial spot
+Crop:Tomato  Disease:Early blight
+Crop:Tomato  Disease:Late blight
+Crop:Tomato  Disease:Leaf Mold
+Crop:Tomato  Disease:Septoria leaf spot
+Crop:Tomato  Disease:Spider mites
+Crop:Tomato  Disease:Target Spot
+Crop:Tomato  Disease:Yellow Leaf Curl Virus
+Crop:Tomato  Disease:Mosaic Virus
+Crop:Tomato

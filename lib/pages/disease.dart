@@ -63,21 +63,34 @@ class _DiseasePageState extends State<DiseasePage> {
     if (idx == 4) {
       return Colors.black;
     }
-    if (idx == 4 ||
-        idx == 6 ||
+    if (idx == 3 ||
+        idx == 5 ||
         idx == 7 ||
         idx == 11 ||
         idx == 15 ||
-        idx == 19 ||
-        idx == 21 ||
-        idx == 23 ||
+        idx == 18 ||
+        idx == 20 ||
+        idx == 22 ||
+        idx == 24 ||
         idx == 25 ||
-        idx == 26 ||
         idx == 28 ||
-        idx == 32) {
+        idx == 38) {
       return Colors.green;
     }
     return Colors.red;
+  }
+
+  String textDecider(Color color) {
+    if (color == Colors.black) {
+      return "No Leaf Found";
+    }
+    if (color == Colors.green) {
+      return "This crop is Healthy!!!";
+    }
+    if (color == Colors.red) {
+      return "This crop is Diseased!!!";
+    }
+    return "";
   }
 
   @override
@@ -132,7 +145,20 @@ class _DiseasePageState extends State<DiseasePage> {
                                 ),
                                 _output != null
                                     ? Text(
-                                        "This Crop is ${_output[0]["label"]}",
+                                        textDecider(
+                                            colordecider(_output[0]["index"])),
+                                        textAlign: TextAlign.center,
+                                        softWrap: true,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color:
+                                              colordecider(_output[0]["index"]),
+                                        ),
+                                      )
+                                    : Container(),
+                                _output != null
+                                    ? Text(
+                                        "${_output[0]["label"]}",
                                         textAlign: TextAlign.center,
                                         softWrap: true,
                                         style: TextStyle(
