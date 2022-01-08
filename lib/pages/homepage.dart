@@ -212,6 +212,40 @@ void getCurrentData() async {
 Image imageselector(String crop) {
   if (crop == "Wheat") {
     return Image.asset("assets/images/corn.jfif");
+  } else if (crop == "Rice") {
+    return Image.asset("assets/images/rice.jfif");
+  } else if (crop == "Sugarcane") {
+    return Image.asset("assets/images/sugarcane.jfif");
+  } else if (crop == "Soyabean") {
+    return Image.asset("assets/images/soyabean.jfif");
+  } else if (crop == "Corn") {
+    return Image.asset("assets/images/corn.jfif");
+  } else if (crop == "Moong") {
+    return Image.asset("assets/images/moong.jfif");
+  } else if (crop == "Apples") {
+    return Image.asset("assets/images/apple.jfif");
+  } else if (crop == "Tomato") {
+    return Image.asset("assets/images/tomato.jfif");
+  } else if (crop == "Grape") {
+    return Image.asset("assets/images/grapes.jfif");
+  } else if (crop == "Bajra") {
+    return Image.asset("assets/images/jwar.jfif");
+  } else if (crop == "Tur") {
+    return Image.asset("assets/images/tur.jfif");
+  } else if (crop == "Tea") {
+    return Image.asset("assets/images/tea.jfif");
+  } else if (crop == "Coffee") {
+    return Image.asset("assets/images/coffee.jpg");
+  } else if (crop == "Cotton") {
+    return Image.asset("assets/images/cotton.jfif");
+  } else if (crop == "Peas") {
+    return Image.asset("assets/images/peas.jfif");
+  } else if (crop == "Mustard") {
+    return Image.asset("assets/images/mustard.jfif");
+  } else if (crop == "Potato") {
+    return Image.asset("assets/images/potato.jfif");
+  } else if (crop == "Strawberry") {
+    return Image.asset("assets/images/strawberry.jfif");
   } else {
     return Image.asset("assets/images/corn.jfif");
   }
@@ -486,7 +520,7 @@ class _CropTileState extends State<CropTile> {
           // ),
           Container(
             padding: EdgeInsets.all(10),
-            height: 90,
+            height: MediaQuery.of(context).size.height * 0.09,
             child: ClipRRect(
               child: widget.img,
               borderRadius: BorderRadius.circular(60),
