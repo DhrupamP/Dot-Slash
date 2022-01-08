@@ -13,7 +13,7 @@ List<String> croplist = [];
 
 void getData() async {
   List<Weather> forcast = await wf.fiveDayForecastByLocation(21.9203, 73.4232);
-  print(forcast[39]);
+  print(forcast[30].temperature);
 }
 
 class HomePage extends StatefulWidget {
@@ -105,37 +105,43 @@ class _HomePageState extends State<HomePage> {
             children: [
               Align(
                 alignment: Alignment(0, -1),
-                child: Container(
-                  width: sw * 1,
-                  height: sh * 0.3,
-                  decoration: const BoxDecoration(
-                      color: Color(0xff021837),
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(20),
-                          bottomLeft: Radius.circular(20))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
-                        child: Text(
-                          "APP NAME",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            "Hi, User",
+                child: GestureDetector(
+                  onTap: () {
+                    getData();
+                  },
+                  child: Container(
+                    width: sw * 1,
+                    height: sh * 0.3,
+                    decoration: const BoxDecoration(
+                        color: Color(0xff021837),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Center(
+                          child: Text(
+                            "APP NAME",
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
-                          )
-                        ],
-                      )
-                    ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "Hi, User",
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.white),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

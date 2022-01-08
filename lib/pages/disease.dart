@@ -32,6 +32,7 @@ class _DiseasePageState extends State<DiseasePage> {
       _output = output!;
       _loading = false;
     });
+    print(_output[0]["index"].runtimeType);
   }
 
   pickImage() async {
@@ -58,6 +59,27 @@ class _DiseasePageState extends State<DiseasePage> {
     classifyImage(_image);
   }
 
+  Color colordecider(int idx) {
+    if (idx == 4) {
+      return Colors.black;
+    }
+    if (idx == 4 ||
+        idx == 6 ||
+        idx == 7 ||
+        idx == 11 ||
+        idx == 15 ||
+        idx == 19 ||
+        idx == 21 ||
+        idx == 23 ||
+        idx == 25 ||
+        idx == 26 ||
+        idx == 28 ||
+        idx == 32) {
+      return Colors.green;
+    }
+    return Colors.red;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +99,7 @@ class _DiseasePageState extends State<DiseasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
+          backgroundColor: Color(0xff021837),
           centerTitle: true,
           title: Text('Crop Disease Identifier'),
         ),
@@ -85,8 +107,6 @@ class _DiseasePageState extends State<DiseasePage> {
           child: Container(
             alignment: Alignment.center,
             padding: EdgeInsets.all(30),
-            decoration: BoxDecoration(
-                color: Colors.indigo, borderRadius: BorderRadius.circular(30)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -99,17 +119,28 @@ class _DiseasePageState extends State<DiseasePage> {
                               children: [
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.width * 0.5,
+                                      MediaQuery.of(context).size.width * 0.75,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.5,
+                                      MediaQuery.of(context).size.width * 0.75,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(30),
                                     child: Image.file(_image, fit: BoxFit.fill),
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 _output != null
                                     ? Text(
-                                        "This Crop is ${_output[0]["label"]}")
+                                        "This Crop is ${_output[0]["label"]}",
+                                        textAlign: TextAlign.center,
+                                        softWrap: true,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color:
+                                              colordecider(_output[0]["index"]),
+                                        ),
+                                      )
                                     : Container(),
                                 Divider(
                                   height: 25,
@@ -131,9 +162,12 @@ class _DiseasePageState extends State<DiseasePage> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 24, vertical: 17),
                           decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Color(0xff021837),
                               borderRadius: BorderRadius.circular(15)),
-                          child: Text("Take a Photo"),
+                          child: Text(
+                            "Take a Photo",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -147,9 +181,12 @@ class _DiseasePageState extends State<DiseasePage> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 24, vertical: 17),
                           decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Color(0xff021837),
                               borderRadius: BorderRadius.circular(15)),
-                          child: Text("Pick from Gallery"),
+                          child: Text(
+                            "Pick from Gallery",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
