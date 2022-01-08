@@ -95,10 +95,6 @@ void getData() async {
   temp4 = forcast[25].temperature!.celsius!.toInt();
   temp5 = forcast[30].temperature!.celsius!.toInt();
   temp6 = forcast[39].temperature!.celsius!.toInt();
-<<<<<<< HEAD
-  var x = forcast[0].cloudiness;
-=======
->>>>>>> 936032c (current weather)
 }
 
 Color temperatureCompare(String crop) {
@@ -126,18 +122,31 @@ String tempCompare(String crop) {
   int idx = crops.indexOf(crop);
   // print(idx);
   // print(maxTemp[idx]);
-  if (temp1 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise.";}
-  else if (temp2 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 1 day.";}
-  else if (temp3 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 2 days.";}
-  else if (temp4 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 3 days.";}
-  else if (temp5 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 4 days.";}
-  else if (temp6 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 5 days.";}
-  else if (temp11 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop.";}
-  else if (temp12 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 1 day.";}
-  else if (temp13 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 2 days.";}
-  else if (temp14 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 3 days.";}
-  else if (temp15 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 4 days.";}
-  else if (temp16 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 5 days.";}
+  if (temp1 > maxTemp[idx]) {
+    return "Attention Required!!Temprature is expected to rise.";
+  } else if (temp2 > maxTemp[idx]) {
+    return "Attention Required!!Temprature is expected to rise in 1 day.";
+  } else if (temp3 > maxTemp[idx]) {
+    return "Attention Required!!Temprature is expected to rise in 2 days.";
+  } else if (temp4 > maxTemp[idx]) {
+    return "Attention Required!!Temprature is expected to rise in 3 days.";
+  } else if (temp5 > maxTemp[idx]) {
+    return "Attention Required!!Temprature is expected to rise in 4 days.";
+  } else if (temp6 > maxTemp[idx]) {
+    return "Attention Required!!Temprature is expected to rise in 5 days.";
+  } else if (temp11 < minTemp[idx]) {
+    return "Attention Required!!Temprature is expected to drop.";
+  } else if (temp12 < minTemp[idx]) {
+    return "Attention Required!!Temprature is expected to drop in 1 day.";
+  } else if (temp13 < minTemp[idx]) {
+    return "Attention Required!!Temprature is expected to drop in 2 days.";
+  } else if (temp14 < minTemp[idx]) {
+    return "Attention Required!!Temprature is expected to drop in 3 days.";
+  } else if (temp15 < minTemp[idx]) {
+    return "Attention Required!!Temprature is expected to drop in 4 days.";
+  } else if (temp16 < minTemp[idx]) {
+    return "Attention Required!!Temprature is expected to drop in 5 days.";
+  }
   return "Your Crop is safe. Weather is Optimum.";
 }
 
@@ -367,7 +376,8 @@ class _HomePageState extends State<HomePage> {
 }
 
 class CropTile extends StatefulWidget {
-  const CropTile({Key? key, required this.name, required this.color,required this.text})
+  const CropTile(
+      {Key? key, required this.name, required this.color, required this.text})
       : super(key: key);
   final String name;
   final Color color;
