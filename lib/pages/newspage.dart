@@ -28,7 +28,7 @@ class _NewsPageState extends State<NewsPage> {
     setState(
       () {
         ans = mynews.articles as List<Article>;
-        loading=false;
+        loading = false;
       },
     );
   }
@@ -39,22 +39,26 @@ class _NewsPageState extends State<NewsPage> {
     super.initState();
     getNews();
   }
-  bool loading=true;
+
+  bool loading = true;
   @override
   Widget build(BuildContext context) {
-    return loading==true ? Loading():Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text("Latest NEWS")),
-        backgroundColor: Color(0xff021837),
-      ),
-      body: Container(
-        child: ListView.builder(
-            itemCount: ans.length,
-            itemBuilder: (BuildContext context, int idx) {
-              return NewsTile(text: ans[idx].title.toString(), index: idx);
-            }),
-      ),
-    );
+    return loading == true
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              title: Center(child: Text("Latest NEWS")),
+              backgroundColor: Color(0xff021837),
+            ),
+            body: Container(
+              child: ListView.builder(
+                  itemCount: ans.length,
+                  itemBuilder: (BuildContext context, int idx) {
+                    return NewsTile(
+                        text: ans[idx].title.toString(), index: idx);
+                  }),
+            ),
+          );
   }
 }
 

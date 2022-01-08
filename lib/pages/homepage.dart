@@ -20,13 +20,6 @@ int temp4 = 0;
 int temp5 = 0;
 int temp6 = 0;
 
-int temp11 = 0;
-int temp12 = 0;
-int temp13 = 0;
-int temp14 = 0;
-int temp15 = 0;
-int temp16 = 0;
-
 List<String> crops = [
   "Wheat",
   "Rice",
@@ -64,7 +57,7 @@ List<int> maxTemp = [
   37,
   30,
   25,
-  13,
+  21,
   30
 ];
 List<int> minTemp = [
@@ -107,12 +100,12 @@ Color temperatureCompare(String crop) {
       temp5 > maxTemp[idx] ||
       temp6 > maxTemp[idx]) {
     return Colors.red;
-  } else if (temp11 < minTemp[idx] ||
-      temp12 < minTemp[idx] ||
-      temp13 < minTemp[idx] ||
-      temp14 < minTemp[idx] ||
-      temp15 < minTemp[idx] ||
-      temp16 < minTemp[idx]) {
+  } else if (temp1 < minTemp[idx] ||
+      temp2 < minTemp[idx] ||
+      temp3 < minTemp[idx] ||
+      temp4 < minTemp[idx] ||
+      temp5 < minTemp[idx] ||
+      temp6 < minTemp[idx]) {
     return Colors.blue.shade300;
   }
   return Color(0xffededed);
@@ -134,17 +127,17 @@ String tempCompare(String crop) {
     return "Attention Required!!Temprature is expected to rise in 4 days.";
   } else if (temp6 > maxTemp[idx]) {
     return "Attention Required!!Temprature is expected to rise in 5 days.";
-  } else if (temp11 < minTemp[idx]) {
+  } else if (temp1 < minTemp[idx]) {
     return "Attention Required!!Temprature is expected to drop.";
-  } else if (temp12 < minTemp[idx]) {
+  } else if (temp2 < minTemp[idx]) {
     return "Attention Required!!Temprature is expected to drop in 1 day.";
-  } else if (temp13 < minTemp[idx]) {
+  } else if (temp3 < minTemp[idx]) {
     return "Attention Required!!Temprature is expected to drop in 2 days.";
-  } else if (temp14 < minTemp[idx]) {
+  } else if (temp4 < minTemp[idx]) {
     return "Attention Required!!Temprature is expected to drop in 3 days.";
-  } else if (temp15 < minTemp[idx]) {
+  } else if (temp5 < minTemp[idx]) {
     return "Attention Required!!Temprature is expected to drop in 4 days.";
-  } else if (temp16 < minTemp[idx]) {
+  } else if (temp6 < minTemp[idx]) {
     return "Attention Required!!Temprature is expected to drop in 5 days.";
   }
   return "Your Crop is safe. Weather is Optimum.";
@@ -167,36 +160,60 @@ void getCurrentData() async {
   print(w.temperature!.celsius);
   if (currweather == "11d") {
     curricon = WeatherIcons.day_thunderstorm;
+    currstatus = "Thunder Storm";
   } else if (currweather == "09d") {
     curricon = WeatherIcons.day_showers;
+    currstatus = "Drizzling";
   } else if (currweather == "10d") {
     curricon = WeatherIcons.day_rain;
+    currstatus = "Rainy";
   } else if (currweather == "13d") {
     curricon = WeatherIcons.day_snow;
+    currstatus = "Snow";
   } else if (currweather == "50d") {
     curricon = WeatherIcons.day_haze;
+    currstatus = "Haze";
   } else if (currweather == "01d") {
     curricon = WeatherIcons.day_sunny;
+    currstatus = "Sunny";
   } else if (currweather == "02d" || currweather == "03d") {
     curricon = WeatherIcons.day_cloudy;
+    currstatus = "Cloudy";
   } else if (currweather == "04d") {
     curricon = WeatherIcons.day_cloudy_high;
+    currstatus = "Cloudy";
   } else if (currweather == "11n") {
     curricon = WeatherIcons.night_thunderstorm;
+    currstatus = "Thunder Storm";
   } else if (currweather == "09n") {
     curricon = WeatherIcons.night_showers;
+    currstatus = "Drizzling";
   } else if (currweather == "10n") {
     curricon = WeatherIcons.night_rain;
+    currstatus = "Rainy";
   } else if (currweather == "13n") {
     curricon = WeatherIcons.night_snow;
+    currstatus = "Snow";
   } else if (currweather == "50n") {
     curricon = WeatherIcons.night_fog;
+    currstatus = "Haze";
   } else if (currweather == "01n") {
     curricon = WeatherIcons.night_clear;
+    currstatus = "Clear";
   } else if (currweather == "02n" || currweather == "03n") {
     curricon = WeatherIcons.night_cloudy;
+    currstatus = "Cloudy";
   } else if (currweather == "04n") {
     curricon = WeatherIcons.night_cloudy_high;
+    currstatus = "Cloudy";
+  }
+}
+
+Image imageselector(String crop) {
+  if (crop == "Wheat") {
+    return Image.asset("assets/images/corn.jfif");
+  } else {
+    return Image.asset("assets/images/corn.jfif");
   }
 }
 
@@ -246,6 +263,15 @@ class _HomePageState extends State<HomePage> {
     fltrNotif.initialize(initializationSettings,
         onSelectNotification: notificationSelected);
     getData();
+    // setState(() {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     PageRouteBuilder(
+    //       pageBuilder: (context, animation1, animation2) => SingleHome(),
+    //       transitionDuration: Duration.zero,
+    //     ),
+    //   );
+    // });
   }
 
   String dropdownValue = "Wheat";
@@ -312,55 +338,89 @@ class _HomePageState extends State<HomePage> {
                 alignment: Alignment(0, -1),
                 child: Container(
                   width: sw * 1,
-                  height: sh * 0.3,
+                  height: sh * 0.4,
                   decoration: const BoxDecoration(
                       color: Color(0xff021837),
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(20),
                           bottomLeft: Radius.circular(20))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // child: Column(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     const Center(
+                  //       child: Text(
+                  //         "APP NAME",
+                  //         style: TextStyle(fontSize: 20, color: Colors.white),
+                  //       ),
+                  //     ),
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //       children: [
+                  //         const Text(
+                  //           "Hi, User",
+                  //           style: TextStyle(fontSize: 20, color: Colors.white),
+                  //         ),
+                  //         Icon(
+                  //           curricon,
+                  //           color: Colors.white,
+                  //         ),
+                  //         Text(
+                  //           currtemp,
+                  //           style: TextStyle(color: Colors.white),
+                  //         ),
+                  //         Container(
+                  //           decoration: BoxDecoration(
+                  //               shape: BoxShape.circle, color: Colors.white),
+                  //         )
+                  //       ],
+                  //     )
+                  //   ],
+                  // ),
+                  child: Stack(
                     children: [
-                      const Center(
+                      Align(
+                        alignment: Alignment(0, -0.6),
                         child: Text(
                           "APP NAME",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Hi, User",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ),
-                          Icon(
-                            curricon,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            currtemp,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
-                          )
-                        ],
-                      )
+                      Align(
+                        alignment: Alignment(-0.3, 0),
+                        child: Icon(
+                          curricon,
+                          size: 70,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment(0.3, 0.1),
+                        child: Text(
+                          currtemp + "°C",
+                          style: TextStyle(fontSize: 55, color: Colors.white),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment(0, 0.5),
+                        child: Text(
+                          currstatus,
+                          style: TextStyle(fontSize: 30, color: Colors.white),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Align(
-                alignment: Alignment(0, 0),
+                alignment: Alignment(0, 0.9),
                 child: Container(
-                  height: 300,
+                  height: sh * 0.6,
                   child: ListView.builder(
                       itemCount: croplist.length,
                       itemBuilder: (BuildContext context, int idx) {
                         return Container(
                           child: CropTile(
+                            img: imageselector(croplist[idx]),
                             color: temperatureCompare(croplist[idx]),
                             name: croplist[idx],
                             text: tempCompare(croplist[idx]),
@@ -377,11 +437,16 @@ class _HomePageState extends State<HomePage> {
 
 class CropTile extends StatefulWidget {
   const CropTile(
-      {Key? key, required this.name, required this.color, required this.text})
+      {Key? key,
+      required this.name,
+      required this.color,
+      required this.text,
+      required this.img})
       : super(key: key);
   final String name;
   final Color color;
   final String text;
+  final Image img;
 
   @override
   State<CropTile> createState() => _CropTileState();
@@ -404,8 +469,7 @@ class _CropTileState extends State<CropTile> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      height: 80,
-      width: 300,
+      height: MediaQuery.of(context).size.height * 0.15,
       decoration: BoxDecoration(
         color: widget.color,
         borderRadius: BorderRadius.all(
@@ -413,10 +477,40 @@ class _CropTileState extends State<CropTile> {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text(widget.name),
-          Text(widget.text),
+          // Container(
+          //   padding: EdgeInsets.all(10),
+          //   height: 70,
+          //   child: widget.img,
+          //   decoration: BoxDecoration(borderRadius: BorderRadius.circular(60)),
+          // ),
+          Container(
+            padding: EdgeInsets.all(10),
+            height: 90,
+            child: ClipRRect(
+              child: widget.img,
+              borderRadius: BorderRadius.circular(60),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Text(
+                  widget.name,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Text(
+                  widget.text,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                ),
+              )
+            ],
+          ),
           IconButton(
             icon: Icon(Icons.delete, size: 30),
             onPressed: () {
