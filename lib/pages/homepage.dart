@@ -95,13 +95,11 @@ void getData() async {
   temp5 = forcast[30].temperature!.celsius!.toInt();
   temp6 = forcast[39].temperature!.celsius!.toInt();
   var x = forcast[0].cloudiness;
-  print(x);
 }
 
 Color temperatureCompare(String crop) {
   int idx = crops.indexOf(crop);
-  // print(idx);
-  // print(maxTemp[idx]);
+  print(temp1);
   if (temp1 > maxTemp[idx] ||
       temp2 > maxTemp[idx] ||
       temp3 > maxTemp[idx] ||
@@ -109,15 +107,34 @@ Color temperatureCompare(String crop) {
       temp5 > maxTemp[idx] ||
       temp6 > maxTemp[idx]) {
     return Colors.red;
-  } else if (temp11 > minTemp[idx] ||
-      temp12 > minTemp[idx] ||
-      temp13 > minTemp[idx] ||
-      temp14 > minTemp[idx] ||
-      temp15 > minTemp[idx] ||
-      temp16 > minTemp[idx]) {
+  } else if (temp11 < minTemp[idx] ||
+      temp12 < minTemp[idx] ||
+      temp13 < minTemp[idx] ||
+      temp14 < minTemp[idx] ||
+      temp15 < minTemp[idx] ||
+      temp16 < minTemp[idx]) {
     return Colors.blue.shade300;
   }
   return Color(0xffededed);
+}
+
+String tempCompare(String crop) {
+  int idx = crops.indexOf(crop);
+  // print(idx);
+  // print(maxTemp[idx]);
+  if (temp1 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise.";}
+  else if (temp2 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 1 day.";}
+  else if (temp3 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 2 days.";}
+  else if (temp4 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 3 days.";}
+  else if (temp5 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 4 days.";}
+  else if (temp6 > maxTemp[idx]){return "Attention Required!!Temprature is expected to rise in 5 days.";}
+  else if (temp11 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop.";}
+  else if (temp12 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 1 day.";}
+  else if (temp13 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 2 days.";}
+  else if (temp14 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 3 days.";}
+  else if (temp15 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 4 days.";}
+  else if (temp16 < minTemp[idx]){return "Attention Required!!Temprature is expected to drop in 5 days.";}
+  return "Your Crop is safe. Weather is Optimum.";
 }
 
 // String tempControl(String crop) {
@@ -289,6 +306,7 @@ class _HomePageState extends State<HomePage> {
                           child: CropTile(
                             color: temperatureCompare(croplist[idx]),
                             name: croplist[idx],
+                            text: tempCompare(croplist[idx]),
                           ),
                         );
                       }),
@@ -301,10 +319,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class CropTile extends StatefulWidget {
-  const CropTile({Key? key, required this.name, required this.color})
+  const CropTile({Key? key, required this.name, required this.color,required this.text})
       : super(key: key);
   final String name;
   final Color color;
+  final String text;
 
   @override
   State<CropTile> createState() => _CropTileState();
@@ -339,6 +358,7 @@ class _CropTileState extends State<CropTile> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(widget.name),
+          Text(widget.text),
           IconButton(
             icon: Icon(Icons.delete, size: 30),
             onPressed: () {
