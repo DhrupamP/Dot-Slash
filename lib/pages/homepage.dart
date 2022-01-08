@@ -6,6 +6,7 @@ import 'package:weather/weather.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'disease.dart';
+import 'package:weather_icons/weather_icons.dart';
 import '../main.dart';
 
 String apikey = "c7f3ca513a67d8c827f86198c25c05c1";
@@ -94,7 +95,10 @@ void getData() async {
   temp4 = forcast[25].temperature!.celsius!.toInt();
   temp5 = forcast[30].temperature!.celsius!.toInt();
   temp6 = forcast[39].temperature!.celsius!.toInt();
+<<<<<<< HEAD
   var x = forcast[0].cloudiness;
+=======
+>>>>>>> 936032c (current weather)
 }
 
 Color temperatureCompare(String crop) {
@@ -140,16 +144,52 @@ String tempCompare(String crop) {
 // String tempControl(String crop) {
 //   int idx = crops.indexOf(crop);
 // }
-// String currweather = "";
-//
-// void getCurrentData() async {
-//   Weather w = await wf.currentWeatherByLocation(21.9203, 73.4232);
-//
-//   currweather = w.weatherIcon!;
-//   if(currweather =="11d"){
-//     return FontAwesomeIcons.
-//   }
-// }
+
+String currweather = "";
+IconData curricon = WeatherIcons.thunderstorm;
+String currtemp = "deg cel";
+String currstatus = "";
+int c = 0;
+void getCurrentData() async {
+  Weather w = await wf.currentWeatherByLocation(24.3501, 56.7133);
+  currweather = w.weatherIcon!;
+  c = w.temperature!.celsius!.toInt();
+  currtemp = c.toString();
+  print(w.temperature!.celsius);
+  if (currweather == "11d") {
+    curricon = WeatherIcons.day_thunderstorm;
+  } else if (currweather == "09d") {
+    curricon = WeatherIcons.day_showers;
+  } else if (currweather == "10d") {
+    curricon = WeatherIcons.day_rain;
+  } else if (currweather == "13d") {
+    curricon = WeatherIcons.day_snow;
+  } else if (currweather == "50d") {
+    curricon = WeatherIcons.day_haze;
+  } else if (currweather == "01d") {
+    curricon = WeatherIcons.day_sunny;
+  } else if (currweather == "02d" || currweather == "03d") {
+    curricon = WeatherIcons.day_cloudy;
+  } else if (currweather == "04d") {
+    curricon = WeatherIcons.day_cloudy_high;
+  } else if (currweather == "11n") {
+    curricon = WeatherIcons.night_thunderstorm;
+  } else if (currweather == "09n") {
+    curricon = WeatherIcons.night_showers;
+  } else if (currweather == "10n") {
+    curricon = WeatherIcons.night_rain;
+  } else if (currweather == "13n") {
+    curricon = WeatherIcons.night_snow;
+  } else if (currweather == "50n") {
+    curricon = WeatherIcons.night_fog;
+  } else if (currweather == "01n") {
+    curricon = WeatherIcons.night_clear;
+  } else if (currweather == "02n" || currweather == "03n") {
+    curricon = WeatherIcons.night_cloudy;
+  } else if (currweather == "04n") {
+    curricon = WeatherIcons.night_cloudy_high;
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -189,7 +229,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     putData();
-
+    getCurrentData();
     AndroidInitializationSettings androidinitialize =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
     InitializationSettings initializationSettings =
@@ -272,7 +312,7 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Center(
+                      const Center(
                         child: Text(
                           "APP NAME",
                           style: TextStyle(fontSize: 20, color: Colors.white),
@@ -281,9 +321,17 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
+                          const Text(
                             "Hi, User",
                             style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                          Icon(
+                            curricon,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            currtemp,
+                            style: TextStyle(color: Colors.white),
                           ),
                           Container(
                             decoration: BoxDecoration(
