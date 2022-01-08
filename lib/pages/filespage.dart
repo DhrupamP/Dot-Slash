@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:try_notif/pages/auth.dart';
 
 class FilesPage extends StatefulWidget {
   const FilesPage({Key? key}) : super(key: key);
@@ -46,7 +47,9 @@ class _FilesPageState extends State<FilesPage> {
                       "Register",
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){return Register();}));
+                    }),
               ),
             ),
             Align(
@@ -59,7 +62,9 @@ class _FilesPageState extends State<FilesPage> {
                         "Login",
                         style: TextStyle(fontSize: 20),
                       ),
-                      onPressed: () {})),
+                      onPressed: () {
+
+                      })),
             )
           ],
         ),
