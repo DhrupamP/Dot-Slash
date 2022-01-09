@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:try_notif/pages/disease.dart';
+import 'package:try_notif/pages/loading.dart';
 import 'package:try_notif/pages/singleHome.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -152,8 +153,10 @@ IconData curricon = WeatherIcons.thunderstorm;
 String currtemp = "deg cel";
 String currstatus = "";
 int c = 0;
+bool loading = true;
 void getCurrentData() async {
   Weather w = await wf.currentWeatherByLocation(24.3501, 56.7133);
+  loading = false;
   currweather = w.weatherIcon!;
   c = w.temperature!.celsius!.toInt();
   currtemp = c.toString();
@@ -350,182 +353,186 @@ class _HomePageState extends State<HomePage> {
     TextEditingController myController = TextEditingController();
     List<Widget> pages = [HomePage(), DiseasePage()];
     String selectedcrop = "";
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("ADD CROP"),
-                    content: Container(
-                      height: sh * 0.15,
-                      child: Column(
-                        children: [
-                          DropdownButtonFormField(
-                            hint: Text("Select Crop"),
-                            items: crops
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                                selectedcrop = newValue;
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  croplist.add(selectedcrop);
-                                  Navigator.pop(context);
-                                  addData();
-                                });
-                              },
-                              child: Text("ADD"))
-                        ],
-                      ),
-                    ),
-                  );
-                });
-          },
-          child: Icon(Icons.add)),
-      body: Container(
-          height: sh,
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment(0, -1),
-                child: Container(
-                  width: sw * 1,
-                  height: sh * 0.4,
-                  decoration: const BoxDecoration(
-                      color: Color(0xff021837),
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(20),
-                          bottomLeft: Radius.circular(20))),
-                  // child: Column(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     const Center(
-                  //       child: Text(
-                  //         "APP NAME",
-                  //         style: TextStyle(fontSize: 20, color: Colors.white),
-                  //       ),
-                  //     ),
-                  //     Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //       children: [
-                  //         const Text(
-                  //           "Hi, User",
-                  //           style: TextStyle(fontSize: 20, color: Colors.white),
-                  //         ),
-                  //         Icon(
-                  //           curricon,
-                  //           color: Colors.white,
-                  //         ),
-                  //         Text(
-                  //           currtemp,
-                  //           style: TextStyle(color: Colors.white),
-                  //         ),
-                  //         Container(
-                  //           decoration: BoxDecoration(
-                  //               shape: BoxShape.circle, color: Colors.white),
-                  //         )
-                  //       ],
-                  //     )
-                  //   ],
-                  // ),
-                  child: Stack(
-                    children: [
-                      const Align(
-                        alignment: Alignment(0, -0.6),
-                        // const Center(
-// >>>>>>> 936032c (current weather)
-                        child: Text(
-                          "AgroMate",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
-                        // ),
-                      ),
-// <<<<<<< HEAD
-                      Align(
-                        alignment: Alignment(-0.3, 0),
-                        child: Icon(
-                          curricon,
-                          size: 70,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.3, 0.1),
-                        child: Text(
-                          currtemp + "°C",
-                          style: TextStyle(fontSize: 55, color: Colors.white),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0, 0.5),
-                        child: Text(
-                          currstatus,
-                          style: TextStyle(fontSize: 30, color: Colors.white),
-                        ),
-                      ),
-// =======
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "Hi, User",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ),
-                          Icon(
-                            curricon,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            currtemp,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
-                          )
-                        ],
-                      )
-// >>>>>>> 936032c (current weather)
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment(0, 0.9),
-                child: Container(
-                  height: sh * 0.6,
-                  child: ListView.builder(
-                      itemCount: croplist.length,
-                      itemBuilder: (BuildContext context, int idx) {
-                        return Container(
-                          child: CropTile(
-                            img: imageselector(croplist[idx]),
-                            color: temperatureCompare(croplist[idx]),
-                            name: croplist[idx],
-                            text: tempCompare(croplist[idx]),
+    return loading == true
+        ? Loading()
+        : Scaffold(
+            floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("ADD CROP"),
+                          content: Container(
+                            height: sh * 0.15,
+                            child: Column(
+                              children: [
+                                DropdownButtonFormField(
+                                  hint: Text("Select Crop"),
+                                  items: crops.map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue!;
+                                      selectedcrop = newValue;
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        croplist.add(selectedcrop);
+                                        Navigator.pop(context);
+                                        addData();
+                                      });
+                                    },
+                                    child: Text("ADD"))
+                              ],
+                            ),
                           ),
                         );
-                      }),
-                ),
-              ),
-            ],
-          )),
-    );
+                      });
+                },
+                child: Icon(Icons.add)),
+            body: Container(
+                height: sh,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -1),
+                      child: Container(
+                        width: sw * 1,
+                        height: sh * 0.4,
+                        decoration: const BoxDecoration(
+                            color: Color(0xff021837),
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20))),
+                        // child: Column(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: [
+                        //     const Center(
+                        //       child: Text(
+                        //         "APP NAME",
+                        //         style: TextStyle(fontSize: 20, color: Colors.white),
+                        //       ),
+                        //     ),
+                        //     Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //       children: [
+                        //         const Text(
+                        //           "Hi, User",
+                        //           style: TextStyle(fontSize: 20, color: Colors.white),
+                        //         ),
+                        //         Icon(
+                        //           curricon,
+                        //           color: Colors.white,
+                        //         ),
+                        //         Text(
+                        //           currtemp,
+                        //           style: TextStyle(color: Colors.white),
+                        //         ),
+                        //         Container(
+                        //           decoration: BoxDecoration(
+                        //               shape: BoxShape.circle, color: Colors.white),
+                        //         )
+                        //       ],
+                        //     )
+                        //   ],
+                        // ),
+                        child: Stack(
+                          children: [
+                            const Align(
+                              alignment: Alignment(0, -0.6),
+                              // const Center(
+                              child: Text(
+                                "AgroMate",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                              // ),
+                            ),
+                            Align(
+                              alignment: Alignment(-0.3, 0),
+                              child: Icon(
+                                curricon,
+                                size: 70,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment(0.3, 0.1),
+                              child: Text(
+                                currtemp + "°C",
+                                style: TextStyle(
+                                    fontSize: 55, color: Colors.white),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment(0, 0.5),
+                              child: Text(
+                                currstatus,
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
+                              ),
+                            ),
+// =======
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Text(
+                                  "Hi, User",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                Icon(
+                                  curricon,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  currtemp,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.9),
+                      child: Container(
+                        height: sh * 0.6,
+                        child: ListView.builder(
+                            itemCount: croplist.length,
+                            itemBuilder: (BuildContext context, int idx) {
+                              return Container(
+                                child: CropTile(
+                                  img: imageselector(croplist[idx]),
+                                  color: temperatureCompare(croplist[idx]),
+                                  name: croplist[idx],
+                                  text: tempCompare(croplist[idx]),
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                )),
+          );
   }
 }
 
