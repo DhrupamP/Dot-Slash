@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:try_notif/pages/register.dart';
+import 'fileadd.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 final FirebaseAuth _auth=FirebaseAuth.instance;
 
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
-
-class Register extends StatefulWidget {
   @override
-  _RegisterState createState() => _RegisterState();
+  _LoginState createState() => _LoginState();
 }
 
-class _RegisterState extends State<Register> {
-  void _register() async {
-    try{
-      final UserCredential user = (await
-      _auth.createUserWithEmailAndPassword(
-        email: username,
-        password: password,
-      ));
-    } on FirebaseAuthException catch (e){
-      print(e.toString());
+class _LoginState extends State<Login> {
+  void _login() async {
+    final UserCredential user = (await
+    _auth.signInWithEmailAndPassword(
+      email: username,
+      password: password,
+    ));
+    if(user.user!=null){
+      SharedPreferences pref=await SharedPreferences.getInstance();
+      pref.setString('uid', username);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){return Filee();}));
     }
   }
   String username ="";
@@ -40,7 +43,7 @@ class _RegisterState extends State<Register> {
                 child: Column(
                     children: [
                       SizedBox(height: 20),
-                      Text('Welcome OnBoard!',style: TextStyle(
+                      Text('Welcome Back!',style: TextStyle(
                           fontSize: 25,
                           fontWeight:FontWeight.bold
                       ),),
@@ -115,13 +118,24 @@ class _RegisterState extends State<Register> {
                             height: MediaQuery.of(context).size.height * 0.06,
                             child: ElevatedButton(
                                 child: Text(
-                                  "Register",
+                                  "Login",
                                   style: TextStyle(fontSize: 20),
                                 ),
                                 onPressed: () {
-
+                                  _login();
                                 })),
-                      )
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.red,
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){return Register();}));
+                        },
+                        child: Text('Do not have a account? Register'),
+                      ),
                     ]
                 )
             ),
@@ -135,6 +149,4 @@ class _RegisterState extends State<Register> {
 void hideKeyboard(BuildContext context){
   FocusScope.of(context).requestFocus(FocusNode());
 }
-
-
 

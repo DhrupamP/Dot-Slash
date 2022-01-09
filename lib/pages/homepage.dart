@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'disease.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../main.dart';
-
+import 'package:location/location.dart';
 String apikey = "c7f3ca513a67d8c827f86198c25c05c1";
 WeatherFactory wf = new WeatherFactory(apikey);
 List<String> croplist = [];
@@ -81,8 +81,8 @@ List<int> minTemp = [
   7,
   22
 ];
-void getData() async {
-  List<Weather> forcast = await wf.fiveDayForecastByLocation(21.9203, 73.4232);
+void getData(double lati, double longi) async {
+  List<Weather> forcast = await wf.fiveDayForecastByLocation(lati, longi);
   temp1 = forcast[0].temperature!.celsius!.toInt();
   temp2 = forcast[5].temperature!.celsius!.toInt();
   temp3 = forcast[15].temperature!.celsius!.toInt();
@@ -154,64 +154,6 @@ String currtemp = "deg cel";
 String currstatus = "";
 int c = 0;
 bool loading = true;
-void getCurrentData() async {
-  Weather w = await wf.currentWeatherByLocation(24.3501, 56.7133);
-  loading = false;
-  currweather = w.weatherIcon!;
-  c = w.temperature!.celsius!.toInt();
-  currtemp = c.toString();
-  print(w.temperature!.celsius);
-  if (currweather == "11d") {
-    curricon = WeatherIcons.day_thunderstorm;
-// <<<<<<< HEAD
-    currstatus = "Thunder Storm";
-  } else if (currweather == "09d") {
-    curricon = WeatherIcons.day_showers;
-    currstatus = "Drizzling";
-  } else if (currweather == "10d") {
-    curricon = WeatherIcons.day_rain;
-    currstatus = "Rainy";
-  } else if (currweather == "13d") {
-    curricon = WeatherIcons.day_snow;
-    currstatus = "Snow";
-  } else if (currweather == "50d") {
-    curricon = WeatherIcons.day_haze;
-    currstatus = "Haze";
-  } else if (currweather == "01d") {
-    curricon = WeatherIcons.day_sunny;
-    currstatus = "Sunny";
-  } else if (currweather == "02d" || currweather == "03d") {
-    curricon = WeatherIcons.day_cloudy;
-    currstatus = "Cloudy";
-  } else if (currweather == "04d") {
-    curricon = WeatherIcons.day_cloudy_high;
-    currstatus = "Cloudy";
-  } else if (currweather == "11n") {
-    curricon = WeatherIcons.night_thunderstorm;
-    currstatus = "Thunder Storm";
-  } else if (currweather == "09n") {
-    curricon = WeatherIcons.night_showers;
-    currstatus = "Drizzling";
-  } else if (currweather == "10n") {
-    curricon = WeatherIcons.night_rain;
-    currstatus = "Rainy";
-  } else if (currweather == "13n") {
-    curricon = WeatherIcons.night_snow;
-    currstatus = "Snow";
-  } else if (currweather == "50n") {
-    curricon = WeatherIcons.night_fog;
-    currstatus = "Haze";
-  } else if (currweather == "01n") {
-    curricon = WeatherIcons.night_clear;
-    currstatus = "Clear";
-  } else if (currweather == "02n" || currweather == "03n") {
-    curricon = WeatherIcons.night_cloudy;
-    currstatus = "Cloudy";
-  } else if (currweather == "04n") {
-    curricon = WeatherIcons.night_cloudy_high;
-    currstatus = "Cloudy";
-  }
-}
 
 Image imageselector(String crop) {
   if (crop == "Wheat") {
@@ -254,6 +196,14 @@ Image imageselector(String crop) {
     return Image.asset("assets/images/corn.jfif");
   }
 }
+var location = Location();
+double lat =0;
+double lng =0;
+void getLocation()async{
+  var currLocation = await location.getLocation();
+  lat = currLocation.latitude as double;
+  lng = currLocation.longitude as double;
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -263,11 +213,70 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FlutterLocalNotificationsPlugin fltrNotif = FlutterLocalNotificationsPlugin();
-  Future notificationSelected(String? payload) async {}
-
   Future<void> addData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setStringList("name", croplist);
+  }
+
+  void getCurrentData(double lati, double longi) async {
+    Weather w = await wf.currentWeatherByLocation(lati, longi);
+    setState(() {
+      loading=false;
+    });
+    currweather = w.weatherIcon!;
+    c = w.temperature!.celsius!.toInt();
+    currtemp = c.toString();
+    print(w.temperature!.celsius);
+    if (currweather == "11d") {
+      curricon = WeatherIcons.day_thunderstorm;
+// <<<<<<< HEAD
+      currstatus = "Thunder Storm";
+    } else if (currweather == "09d") {
+      curricon = WeatherIcons.day_showers;
+      currstatus = "Drizzling";
+    } else if (currweather == "10d") {
+      curricon = WeatherIcons.day_rain;
+      currstatus = "Rainy";
+    } else if (currweather == "13d") {
+      curricon = WeatherIcons.day_snow;
+      currstatus = "Snow";
+    } else if (currweather == "50d") {
+      curricon = WeatherIcons.day_haze;
+      currstatus = "Haze";
+    } else if (currweather == "01d") {
+      curricon = WeatherIcons.day_sunny;
+      currstatus = "Sunny";
+    } else if (currweather == "02d" || currweather == "03d") {
+      curricon = WeatherIcons.day_cloudy;
+      currstatus = "Cloudy";
+    } else if (currweather == "04d") {
+      curricon = WeatherIcons.day_cloudy_high;
+      currstatus = "Cloudy";
+    } else if (currweather == "11n") {
+      curricon = WeatherIcons.night_thunderstorm;
+      currstatus = "Thunder Storm";
+    } else if (currweather == "09n") {
+      curricon = WeatherIcons.night_showers;
+      currstatus = "Drizzling";
+    } else if (currweather == "10n") {
+      curricon = WeatherIcons.night_rain;
+      currstatus = "Rainy";
+    } else if (currweather == "13n") {
+      curricon = WeatherIcons.night_snow;
+      currstatus = "Snow";
+    } else if (currweather == "50n") {
+      curricon = WeatherIcons.night_fog;
+      currstatus = "Haze";
+    } else if (currweather == "01n") {
+      curricon = WeatherIcons.night_clear;
+      currstatus = "Clear";
+    } else if (currweather == "02n" || currweather == "03n") {
+      curricon = WeatherIcons.night_cloudy;
+      currstatus = "Cloudy";
+    } else if (currweather == "04n") {
+      curricon = WeatherIcons.night_cloudy_high;
+      currstatus = "Cloudy";
+    }
   }
 
   void putData() async {
@@ -281,8 +290,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     putData();
-    getCurrentData();
-    getData();
+    getCurrentData(lat,lng);
+    getData(lat,lng);
   }
 
   String dropdownValue = "Wheat";
@@ -370,7 +379,7 @@ class _HomePageState extends State<HomePage> {
                               // ),
                             ),
                             Align(
-                              alignment: Alignment(-0.3, 0),
+                              alignment: Alignment(-0.4, 0),
                               child: Icon(
                                 curricon,
                                 size: 70,
@@ -378,7 +387,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Align(
-                              alignment: Alignment(0.3, 0.1),
+                              alignment: Alignment(0.4, 0.1),
                               child: Text(
                                 currtemp + "°C",
                                 style: TextStyle(
@@ -393,29 +402,7 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: 30, color: Colors.white),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Text(
-                                  "Hi, User",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                                Icon(
-                                  curricon,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  currtemp,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white),
-                                )
-                              ],
-                            )
+
                           ],
                         ),
                       ),

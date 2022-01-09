@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:try_notif/pages/auth.dart';
-
+import 'package:try_notif/pages/login.dart';
+import 'package:try_notif/pages/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'fileadd.dart';
 class FilesPage extends StatefulWidget {
   const FilesPage({Key? key}) : super(key: key);
-
   @override
   _FilesPageState createState() => _FilesPageState();
 }
-
+String uid=" ";
 class _FilesPageState extends State<FilesPage> {
   @override
+  void initState() {
+    super.initState();
+    wrapper();
+  }
+  wrapper()async{
+    SharedPreferences pref= await SharedPreferences.getInstance();
+    uid=pref.getString('uid')!;
+  }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return uid!=" " ? Filee(): Scaffold(
       body: Container(
         child: Stack(
           children: [
@@ -63,7 +73,7 @@ class _FilesPageState extends State<FilesPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){return Login();}));
                       })),
             )
           ],
